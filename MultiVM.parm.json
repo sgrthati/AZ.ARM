@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "RGName": {
+            "value": "test"
+        },
+        "location": {
+            "value": "EastUS"
+        },
+        "vmName": {
+            "value": "Sagar"
+        },
+        "vmCount": {
+            "value": 2
+        },
+        "adminUsername": {
+            "value": "Sagar.thati"
+        },
+        "adminPassword": {
+            "value": "Azure@123456"
+        },
+        "publicIpName": {
+            "value": "publicip"
+        },
+        "publicIPAllocationMethod": {
+            "value": "Static"
+        },
+        "publicIpSku": {
+            "value": "Basic"
+        },
+        "OSVersion": {
+            "Value": "2019-datacenter-gensecond"
+        }
+    }
+}
