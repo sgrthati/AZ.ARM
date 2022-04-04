@@ -5,9 +5,9 @@
 
 New-AzResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName ExampleResourceGroup `
 
-  -TemplateFile <path-to-template> `
+  -TemplateFile >path-to-template< `
   
-  -TemplateParameterFile <path-to-template>
+  -TemplateParameterFile >path-to-template<
   
   
   
@@ -15,9 +15,9 @@ New-AzResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName Example
   
 New-AzResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName ExampleResourceGroup `
   
-  -TemplateUri <FILE URL> `
+  -TemplateUri >FILE URL< `
   
-  -TemplateParameterUri <FILE URL>
+  -TemplateParameterUri >FILE URL<
   
   
 **THROUGH PORTAL**
