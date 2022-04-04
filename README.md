@@ -1,7 +1,7 @@
 <<WE CAN EXECUTE ARM TEMPLATES THROUGH POWERSHELL/PORTAL/>>
 
 
-******FROM LOCAL STORAGE******
+**FROM LOCAL STORAGE**
 
 New-AzResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName ExampleResourceGroup `
 
@@ -11,7 +11,7 @@ New-AzResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName Example
   
   
   
-****** FROM FILE URI********
+**FROM FILE URI**
   
 New-AzResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName ExampleResourceGroup `
   
@@ -20,7 +20,7 @@ New-AzResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName Example
   -TemplateParameterUri <FILE URL>
   
   
-****** THROUGH PORTAL ******
+**THROUGH PORTAL**
   
 1.In a web browser, go to the Azure portal and sign in
   
