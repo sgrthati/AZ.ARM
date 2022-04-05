@@ -169,14 +169,14 @@
                         "properties": {
                             "addressPrefix": "[variables('subnetPrefix')]",
                             "networkSecurityGroup": {
-                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+                                "id": "[variables('networkSecurityGroupName')]"
                             }
                         }
                     }
                 ]
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+                "[variables('networkSecurityGroupName')]"
             ]
         },
         {
@@ -205,8 +205,8 @@
                 ]
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('publicIpName'),'-',copyindex(1)))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+                "[concat(parameters('publicIpName'),'-',copyindex(1))]",
+                "[variables('virtualNetworkName')]"
             ]
         },
         {
@@ -257,7 +257,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),'-',copyIndex(1)))]"
+                "[concat(variables('nicName'),'-',copyIndex(1))]"
             ]
         },
         {
@@ -287,7 +287,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', concat(parameters('vmName'),'-',copyIndex(1)))]"
+                "[concat(parameters('vmName'),'-',copyIndex(1))]"
             ]
         }
     ],
