@@ -263,7 +263,7 @@
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "apiVersion": "2018-06-01",
-            "name": "[concat(parameters('vmName'),'-',copyIndex(1),'/CustomScriptExtension')]",
+            "name": "[concat(parameters('vmName'),'-',copyIndex(1),'/','CustomScriptExtension')]",
             "location": "[parameters('location')]",
             "copy": {
                 "name": "VMLoop",
