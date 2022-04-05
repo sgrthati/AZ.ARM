@@ -96,8 +96,8 @@
         "addressPrefix": "10.0.0.0/16",
         "subnetName": "Subnet",
         "subnetPrefix": "10.0.0.0/24",
-        "virtualNetworkName": "[parameters('RGName')]",
-        "networkSecurityGroupName": "[parameters('RGName')]"
+        "virtualNetworkName": "[concat(parameters('RGName'),'-','VNET')]",
+        "networkSecurityGroupName": "[concat(parameters('RGName'),'-',NSG)]"
     },
     "resources": [
         {
