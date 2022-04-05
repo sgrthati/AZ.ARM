@@ -261,8 +261,8 @@
             ]
         },
         {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2018-06-01",
+            "type": "extensions",
+            "apiVersion": "2016-03-30",
             "name": "[concat(parameters('vmName'),'-',copyIndex(1),'/','MyCustomScriptExtension')]",
             "location": "[parameters('location')]",
             "copy": {
