@@ -1,0 +1,300 @@
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "RGName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "vmName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the virtual machine."
+            }
+        },
+        "vmCount": {
+            "type": "int",
+            "metadata": {
+                "description": "VM Count."
+            }
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "Username for the Virtual Machine."
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "minLength": 12,
+            "metadata": {
+                "description": "Password for the Virtual Machine."
+            }
+        },
+        "publicIpName": {
+            "type": "string",
+            "allowedValues":["publicip"],
+            "metadata": {
+                "description": "Name for the Public IP used to access the Virtual Machine."
+            }
+        },
+        "publicIPAllocationMethod": {
+            "type": "string",
+            "allowedValues": [
+                "Dynamic",
+                "Static"
+            ],
+            "metadata": {
+                "description": "Allocation method for the Public IP used to access the Virtual Machine."
+            }
+        },
+        "publicIpSku": {
+            "type": "string",
+            "allowedValues": [
+                "Basic",
+                "Standard"
+            ],
+            "metadata": {
+                "description": "SKU for the Public IP used to access the Virtual Machine."
+            }
+        },
+        "OSVersion": {
+            "type": "string",
+            "allowedValues": [
+                "2019-datacenter-gensecond",
+                "2019-datacenter-core-gensecond",
+                "2019-datacenter-core-smalldisk-gensecond",
+                "2019-datacenter-core-with-containers-gensecond",
+                "2019-datacenter-core-with-containers-smalldisk-g2",
+                "2019-datacenter-smalldisk-gensecond",
+                "2019-datacenter-with-containers-gensecond",
+                "2019-datacenter-with-containers-smalldisk-g2",
+                "2016-datacenter-gensecond"
+            ],
+            "metadata": {
+                "description": "The Windows version for the VM. This will pick a fully patched Gen2 image of this given Windows version."
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_Ds1_v2",
+            "metadata": {
+                "description": "Size of the virtual machine."
+            }
+        }
+    },
+    "variables": {
+        "nicName": "[parameters('vmName')]",
+        "addressPrefix": "10.0.0.0/16",
+        "subnetName": "Subnet",
+        "subnetPrefix": "10.0.0.0/24",
+        "virtualNetworkName": "[parameters('RGName')]",
+        "networkSecurityGroupName": "[parameters('RGName')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(parameters('publicIpName'),'-',copyindex(1))]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('publicIpSku')]"
+            },
+            "copy": {
+                "name": "PIPloop",
+                "count": "[parameters('vmCount')]"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]"
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('networkSecurityGroupName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "default-allow-3389",
+                        "properties": {
+                            "priority": 1000,
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "destinationPortRange": "3389",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "default-allow-80",
+                        "properties": {
+                            "priority": 2000,
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "destinationPortRange": "80",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('virtualNetworkName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('addressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('subnetName')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnetPrefix')]",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(variables('nicName'),'-',copyIndex(1))]",
+            "location": "[parameters('location')]",
+            "copy": {
+                "name": "NICloop",
+                "count": "[parameters('vmCount')]"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "Ipconfig1",
+
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('publicIpName'),'-',copyindex(1)))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('publicIpName'),'-',copyindex(1)))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('vmName'),'-',copyIndex(1))]",
+            "location": "[parameters('location')]",
+            "copy": {
+                "name": "VMLoop",
+                "count": "[parameters('vmCount')]"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('vmName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "[parameters('OSVersion')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "StandardSSD_LRS"
+                        }
+                    },
+                    "dataDisks": [
+                        {
+                            "diskSizeGB": 1023,
+                            "lun": 0,
+                            "createOption": "Empty"
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),'-',copyIndex(1)))]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),'-',copyIndex(1)))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2018-06-01",
+            "name": "CustomScript",
+            "location": "[parameters('location')]",
+            "copy": {
+                "name": "VMLoop",
+                "count": "[parameters('vmCount')]"
+        },
+        "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.10",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+                "timestamp":1
+            },
+            "protectedSettings": {
+                "commandToExecute": "Java.ps1",
+                "storageAccountName": "csg10032001e3746bdc",
+                "storageAccountKey": "rlAhluMzxRutgD4wVzMl1dqh4GLmCvr/NZRQmEM20hTewB7fbTanTISxkhFHP0UK1OjKQL5jCTg66xiRK43M4A==",
+                "fileUris": [
+                    "https://csg10032001e3746bdc.blob.core.windows.net/customscript/Java.ps1"
+                ]
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', concat(parameters('vmName'),'-',copyIndex(1))]"
+            ]
+        }
+        }
+    ],
+    "outputs": {
+        "hostname": {
+            "type": "string",
+            "value": "[parameters('vmName')]"
+        }
+    }
+}
