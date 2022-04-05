@@ -262,7 +262,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2021-03-01",
+            "apiVersion": "2018-06-01",
             "name": "CustomScript",
             "location": "[parameters('location')]",
             "copy": {
@@ -272,13 +272,13 @@
             "properties": {
                 "publisher": "Microsoft.Compute",
                 "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.10",
+                "typeHandlerVersion": "1.4",
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "timestamp": 1
                 },
                 "protectedSettings": {
-                    "commandToExecute": "Java.ps1",
+                    "commandToExecute": "powershell.exe -File Java.ps1",
                     "storageAccountName": "csg10032001e3746bdc",
                     "storageAccountKey": "rlAhluMzxRutgD4wVzMl1dqh4GLmCvr/NZRQmEM20hTewB7fbTanTISxkhFHP0UK1OjKQL5jCTg66xiRK43M4A==",
                     "fileUris": [
