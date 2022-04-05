@@ -292,9 +292,9 @@
                     ]
                 }
             },
-                "dependsOn": [
-                    "[resourceId('Microsoft.Compute/virtualMachines', concat(parameters('vmName'),'-',copyIndex(1)))]"
-                ]
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', concat(parameters('vmName'),'-',copyIndex(1)))]"
+            ]
         }
     ],
     "outputs": {
