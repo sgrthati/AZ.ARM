@@ -286,7 +286,7 @@
                     ]
                 },
                 "dependsOn": [
-                    "[concat(parameters('vmName'),'-',copyIndex(1))]"
+                    "[resourceId('Microsoft.Compute/virtualMachines/', concat(parameters('vmName'),'-',copyIndex(1)))]"
                 ]
             }
         }
