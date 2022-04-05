@@ -262,7 +262,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2018-06-01",
+            "apiVersion": "2021-03-01",
             "name": "CustomScript",
             "location": "[parameters('location')]",
             "copy": {
