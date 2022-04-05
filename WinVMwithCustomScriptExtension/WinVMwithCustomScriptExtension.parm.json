@@ -32,7 +32,7 @@
         "OSVersion": {
             "Value": "2019-datacenter-gensecond"
         },
-        "CustomScript": {
+        "OwnScript": {
             "Value": "Script"
         }
     }

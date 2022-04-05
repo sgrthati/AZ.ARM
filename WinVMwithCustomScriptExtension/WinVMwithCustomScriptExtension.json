@@ -89,6 +89,12 @@
             "metadata": {
                 "description": "Size of the virtual machine."
             }
+        },
+        "OwnScript": {
+            "type": "string",
+            "metadata": {
+                "description": "Script Name."
+            }
         }
     },
     "variables": {
@@ -263,7 +269,7 @@
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "apiVersion": "2018-06-01",
-            "name": "[parameters('CustomScript')]",
+            "name": "[parameters('OwnScript')]",
             "location": "[parameters('location')]",
             "copy": {
                 "name": "VMLoop",
