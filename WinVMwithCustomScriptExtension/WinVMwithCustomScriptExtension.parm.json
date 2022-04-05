@@ -33,7 +33,7 @@
             "Value": "2019-datacenter-gensecond"
         },
         "OwnScript": {
-            "Value": "Script"
+            "Value": "CustomScript"
         }
     }
 }
