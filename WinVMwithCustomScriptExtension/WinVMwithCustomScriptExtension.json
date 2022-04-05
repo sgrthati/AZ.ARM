@@ -1,4 +1,3 @@
-
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
@@ -40,7 +39,9 @@
         },
         "publicIpName": {
             "type": "string",
-            "allowedValues":["publicip"],
+            "allowedValues": [
+                "publicip"
+            ],
             "metadata": {
                 "description": "Name for the Public IP used to access the Virtual Machine."
             }
@@ -191,7 +192,6 @@
                 "ipConfigurations": [
                     {
                         "name": "Ipconfig1",
-
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
@@ -268,27 +268,27 @@
             "copy": {
                 "name": "VMLoop",
                 "count": "[parameters('vmCount')]"
-        },
-        "properties": {
-            "publisher": "Microsoft.Compute",
-            "type": "CustomScriptExtension",
-            "typeHandlerVersion": "1.10",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-                "timestamp":1
             },
-            "protectedSettings": {
-                "commandToExecute": "Java.ps1",
-                "storageAccountName": "csg10032001e3746bdc",
-                "storageAccountKey": "rlAhluMzxRutgD4wVzMl1dqh4GLmCvr/NZRQmEM20hTewB7fbTanTISxkhFHP0UK1OjKQL5jCTg66xiRK43M4A==",
-                "fileUris": [
-                    "https://csg10032001e3746bdc.blob.core.windows.net/customscript/Java.ps1"
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.10",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "timestamp": 1
+                },
+                "protectedSettings": {
+                    "commandToExecute": "Java.ps1",
+                    "storageAccountName": "csg10032001e3746bdc",
+                    "storageAccountKey": "rlAhluMzxRutgD4wVzMl1dqh4GLmCvr/NZRQmEM20hTewB7fbTanTISxkhFHP0UK1OjKQL5jCTg66xiRK43M4A==",
+                    "fileUris": [
+                        "https://csg10032001e3746bdc.blob.core.windows.net/customscript/Java.ps1"
+                    ]
+                },
+                "dependsOn": [
+                    "[concat('Microsoft.Compute/virtualMachines/', concat(parameters('vmName'),'-',copyIndex(1))]"
                 ]
-            },
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', concat(parameters('vmName'),'-',copyIndex(1))]"
-            ]
-        }
+            }
         }
     ],
     "outputs": {
