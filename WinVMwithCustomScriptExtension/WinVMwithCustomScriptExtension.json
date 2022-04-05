@@ -263,7 +263,7 @@
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "apiVersion": "2018-06-01",
-            "name": "[concat(parameters('vmName'),copyIndex(1),'/','/CustomScript')]",
+            "name": "[concat(parameters('vmName'),copyIndex(1),'/','CustomScript')]",
             "location": "[parameters('location')]",
             "copy": {
                 "name": "VMLoop",
@@ -285,7 +285,10 @@
                         "https://csg10032001e3746bdc.blob.core.windows.net/customscript/Java.ps1"
                     ]
                 }
-            }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', concat(parameters('vmName'),'-',copyIndex(1)))]"
+            ]
         }
     ],
     "outputs": {
