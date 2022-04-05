@@ -262,8 +262,8 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2018-06-01",
-            "name": "[concat(parameters('vmName'),'-',copyIndex(1),'/','CustomScript')]",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(parameters('vmName'),'-',copyIndex(1),'/CustomScripteExtension')]",
             "location": "[parameters('location')]",
             "copy": {
                 "name": "VMLoop",
@@ -272,13 +272,13 @@
             "properties": {
                 "publisher": "Microsoft.Compute",
                 "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.4",
+                "typeHandlerVersion": "1.7",
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "timestamp": 1
                 },
                 "protectedSettings": {
-                    "commandToExecute": "powershell.exe -File Java.ps1",
+                    "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File Java.ps1",
                     "storageAccountName": "csg10032001e3746bdc",
                     "storageAccountKey": "rlAhluMzxRutgD4wVzMl1dqh4GLmCvr/NZRQmEM20hTewB7fbTanTISxkhFHP0UK1OjKQL5jCTg66xiRK43M4A==",
                     "fileUris": [
