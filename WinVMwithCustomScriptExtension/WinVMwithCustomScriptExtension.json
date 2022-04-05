@@ -272,7 +272,7 @@
             "properties": {
                 "publisher": "Microsoft.Compute",
                 "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.4",
+                "typeHandlerVersion": "1.7",
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "timestamp": 1
@@ -284,7 +284,10 @@
                     "fileUris": [
                         "https://csg10032001e3746bdc.blob.core.windows.net/customscript/Java.ps1"
                     ]
-                }
+                },
+                "dependsOn": [
+                    "[concat(parameters('vmName'),'-',copyIndex(1))]"
+                ]
             }
         }
     ],
