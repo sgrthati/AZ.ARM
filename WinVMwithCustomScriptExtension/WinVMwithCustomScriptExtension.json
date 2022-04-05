@@ -262,7 +262,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2019-06-01",
+            "apiVersion": "2018-06-01",
             "name": "[concat(parameters('vmName'),'-',copyIndex(1),'/CustomScripteExtension')]",
             "location": "[parameters('location')]",
             "copy": {
@@ -272,7 +272,7 @@
             "properties": {
                 "publisher": "Microsoft.Compute",
                 "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.7",
+                "typeHandlerVersion": "1.4",
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "timestamp": 1
