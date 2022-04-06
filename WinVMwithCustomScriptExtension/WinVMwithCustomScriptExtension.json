@@ -279,10 +279,10 @@
                     "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File Java.ps1"
                 },
                 "protectedSettings": {
-                    "storageAccountName": "csg10032001e3746bdc",
-                    "storageAccountKey": "rlAhluMzxRutgD4wVzMl1dqh4GLmCvr/NZRQmEM20hTewB7fbTanTISxkhFHP0UK1OjKQL5jCTg66xiRK43M4A==",
+                    "storageAccountName": ">STORAGE ACCOUNT NAME<",
+                    "storageAccountKey": ">STORAGE ACCOUNT KEY<",
                     "fileUris": [
-                        "https://csg10032001e3746bdc.blob.core.windows.net/customscript/Java.ps1"
+                        ">FILE ACCESS URI<"
                     ]
                 }
             },
